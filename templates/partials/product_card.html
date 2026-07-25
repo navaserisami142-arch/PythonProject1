@@ -1,0 +1,78 @@
+<div class="group bg-white dark:bg-gray-900 rounded-3xl overflow-hidden border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-2xl transition-all duration-500">
+
+    <!-- Image -->
+    <div class="relative overflow-hidden">
+
+        {% if product.image %}
+            <img
+                src="{{ product.image.url }}"
+                alt="{{ product.name }}"
+                class="w-full h-72 object-cover transition duration-700 group-hover:scale-110">
+        {% else %}
+            <img
+                src="https://placehold.co/600x600?text=No+Image"
+                alt="No Image"
+                class="w-full h-72 object-cover">
+        {% endif %}
+
+        <!-- Wishlist -->
+        <button
+            class="wishlist-btn absolute top-4 right-4 w-11 h-11 rounded-full bg-white dark:bg-gray-800 shadow-lg flex items-center justify-center hover:bg-red-500 hover:text-white transition duration-300"
+            data-id="{{ product.id }}">
+
+            <i class="fa-solid fa-heart text-red-500"></i>
+
+        </button>
+
+        <!-- View Product Button -->
+        <div class="absolute bottom-0 left-0 right-0 translate-y-full group-hover:translate-y-0 transition duration-500 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md p-4">
+
+            <a href="{{ product.get_absolute_url }}"
+               class="block text-center bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl py-3 font-semibold transition">
+
+                View Product
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- Content -->
+    <div class="p-6">
+
+        <!-- Category -->
+        <p class="text-xs uppercase tracking-widest text-gray-400 dark:text-gray-500 font-semibold">
+            {{ product.category.name }}
+        </p>
+
+        <!-- Product Name -->
+        <h3 class="text-xl font-bold text-gray-900 dark:text-white mt-2 transition-colors duration-300">
+            {{ product.name }}
+        </h3>
+
+        <!-- Rating -->
+        <div class="flex items-center mt-4">
+
+            <span class="text-yellow-400 text-lg">
+                <i class="fa-solid fa-star text-red-500"></i>
+            </span>
+
+            <span class="ml-2 text-gray-600 dark:text-gray-300 font-medium transition-colors duration-300">
+                {{ product.average_rating }}
+            </span>
+
+        </div>
+
+        <!-- Price -->
+        <div class="mt-5">
+
+            <span class="text-3xl font-extrabold text-indigo-600 dark:text-indigo-400 transition-colors duration-300">
+                ${{ product.price }}
+            </span>
+
+        </div>
+
+    </div>
+
+</div>

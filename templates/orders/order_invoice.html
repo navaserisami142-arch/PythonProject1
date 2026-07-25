@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="max-w-5xl mx-auto py-16 px-6">
+
+    <div class="bg-white shadow-2xl rounded-3xl p-12">
+
+        <div class="flex justify-between items-center border-b pb-8">
+
+            <div>
+
+                <h1 class="text-5xl font-extrabold text-indigo-600">
+                    Sam Store
+                </h1>
+
+                <p class="text-gray-500 mt-3">
+                    Premium Shopping Experience
+                </p>
+
+            </div>
+
+            <div class="text-right">
+
+                <h2 class="text-3xl font-bold">
+                    Invoice
+                </h2>
+
+                <p class="text-gray-500 mt-2">
+                    #{{ order.id }}
+                </p>
+
+                <p class="text-gray-500">
+                    {{ order.created }}
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="grid md:grid-cols-2 gap-10 mt-10">
+
+            <div>
+
+                <h3 class="font-bold text-xl mb-4">
+                    Customer
+                </h3>
+
+                <p>{{ order.first_name }} {{ order.last_name }}</p>
+                <p>{{ order.email }}</p>
+                <p>{{ order.phone }}</p>
+
+            </div>
+
+            <div>
+
+                <h3 class="font-bold text-xl mb-4">
+                    Shipping Address
+                </h3>
+
+                <p>{{ order.address }}</p>
+                <p>{{ order.city }}</p>
+                <p>{{ order.postal_code }}</p>
+
+            </div>
+
+        </div>
+
+
+        <div class="mt-12">
+
+            <table class="w-full">
+
+                <thead>
+
+                    <tr class="border-b">
+
+                        <th class="text-left py-4">
+                            Product
+                        </th>
+
+                        <th>
+                            Qty
+                        </th>
+
+                        <th>
+                            Price
+                        </th>
+
+                        <th class="text-right">
+                            Total
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for item in order.items.all %}
+
+                    <tr class="border-b">
+
+                        <td class="py-5">
+
+                            {{ item.product.name }}
+
+                        </td>
+
+                        <td class="text-center">
+
+                            {{ item.quantity }}
+
+                        </td>
+
+                        <td class="text-center">
+
+                            ${{ item.price }}
+
+                        </td>
+
+                        <td class="text-right font-semibold">
+
+                            ${{ item.get_total_price }}
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <div class="mt-10 flex justify-end">
+
+            <div class="w-80">
+
+                <div class="flex justify-between mb-3">
+
+                    <span>
+
+                        Discount
+
+                    </span>
+
+                    <strong>
+
+                        {{ order.discount }}%
+
+                    </strong>
+
+                </div>
+
+                <div class="flex justify-between text-2xl font-bold border-t pt-4">
+
+                    <span>
+
+                        Grand Total
+
+                    </span>
+
+                    <span class="text-indigo-600">
+
+                        ${{ order.get_total_price }}
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="mt-12 flex justify-between">
+
+            <a
+                href="{% url 'order_detail' order.id %}"
+                class="bg-gray-200 hover:bg-gray-300 px-8 py-3 rounded-2xl">
+
+                Back
+
+            </a>
+
+            <button
+                onclick="window.print()"
+                class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-2xl">
+
+                Print Invoice
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

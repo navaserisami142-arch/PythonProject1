@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="max-w-7xl mx-auto px-6 py-12">
+
+    <h1 class="text-4xl font-bold mb-10">
+
+        My Orders
+
+    </h1>
+
+    {% if orders %}
+
+    <div class="space-y-6">
+
+        {% for order in orders %}
+
+        <div class="bg-white rounded-3xl shadow border p-8">
+
+            <div class="flex justify-between items-center">
+
+                <div>
+
+                    <h2 class="text-2xl font-bold">
+
+                        Order #{{ order.id }}
+
+                    </h2>
+
+                    <p class="text-gray-500 mt-2">
+
+                        {{ order.created }}
+
+                    </p>
+
+                </div>
+
+                <span class="px-4 py-2 rounded-xl bg-indigo-100 text-indigo-700">
+
+                    {{ order.status }}
+
+                </span>
+
+            </div>
+
+            <hr class="my-6">
+
+            <div class="flex justify-between">
+
+                <span>
+
+                    Total
+
+                </span>
+
+                <strong class="text-indigo-600">
+
+                    ${{ order.get_total_price }}
+
+                </strong>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <div class="bg-white rounded-3xl shadow border p-16 text-center">
+
+        <h2 class="text-3xl font-bold">
+
+            No Orders Yet
+
+        </h2>
+
+        <p class="text-gray-500 mt-4">
+
+            You haven't placed any orders yet.
+
+        </p>
+
+        <a
+            href="{% url 'product_list' %}"
+            class="inline-block mt-8 bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-2xl">
+
+            Start Shopping
+
+        </a>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

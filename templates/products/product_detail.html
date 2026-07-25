@@ -1,0 +1,436 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ product.name }} | Sam Store
+{% endblock %}
+
+{% block content %}
+
+<div class="bg-gray-50 dark:bg-gray-950 min-h-screen transition-colors duration-300">
+
+    <!-- Breadcrumb -->
+
+    <div class="max-w-7xl mx-auto px-6 pt-8">
+
+        <nav class="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-300">
+
+            <a href="{% url 'home' %}"
+               class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-300">
+
+                Home
+
+            </a>
+
+            <span class="mx-2">/</span>
+
+            <a href="{% url 'product_list' %}"
+               class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-300">
+
+                Shop
+
+            </a>
+
+            <span class="mx-2">/</span>
+
+            <span class="text-gray-900 dark:text-white font-semibold transition-colors duration-300">
+
+                {{ product.name }}
+
+            </span>
+
+        </nav>
+
+    </div>
+
+    <!-- Main -->
+
+    <section class="max-w-7xl mx-auto px-6 py-12">
+
+        <div class="grid lg:grid-cols-2 gap-16">
+
+            <!-- LEFT -->
+
+            <div class="flex gap-5">
+
+                <!-- Thumbnails -->
+
+                <div class="flex flex-col gap-4">
+
+                    {% if product.image %}
+
+                    <img
+                        src="{{ product.image.url }}"
+                        onclick="changeImage(this)"
+                        class="thumb w-24 h-24 object-cover rounded-xl cursor-pointer border-2 border-indigo-600">
+
+                    {% endif %}
+
+                    {% for img in images %}
+
+                    <img
+                        src="{{ img.image.url }}"
+                        onclick="changeImage(this)"
+                        class="thumb w-24 h-24 object-cover rounded-xl cursor-pointer hover:border-indigo-600 border-2 border-transparent transition">
+
+                    {% endfor %}
+
+                </div>
+
+                <!-- Main Image -->
+
+                <div class="flex-1 bg-white dark:bg-gray-900 rounded-3xl shadow overflow-hidden transition-colors duration-300">
+                                        {% if product.image %}
+
+                    <img
+                        id="mainImage"
+                        src="{{ product.image.url }}"
+                        class="w-full h-[650px] object-cover transition duration-300">
+
+                    {% else %}
+
+                    <img
+                        id="mainImage"
+                        src="https://placehold.co/700x700?text=No+Image"
+                        class="w-full h-[650px] object-cover">
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            <!-- RIGHT -->
+
+            <div class="flex flex-col justify-center">
+
+                <p class="uppercase tracking-widest text-indigo-600 dark:text-indigo-400 font-semibold transition-colors duration-300">
+
+                    {{ product.category.name }}
+
+                </p>
+
+                <h1 class="text-5xl font-black mt-4 text-gray-900 dark:text-white transition-colors duration-300">
+
+                    {{ product.name }}
+
+                </h1>
+
+                <div class="flex items-center gap-3 mt-5">
+
+                    <div class="flex gap-1 text-yellow-400">
+
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+
+                    </div>
+
+                    <span class="text-gray-500 dark:text-gray-400 transition-colors duration-300">
+
+                        (4.9)
+
+                    </span>
+
+                </div>
+
+                <div class="mt-8">
+
+                    <span class="text-5xl font-black text-indigo-600 dark:text-indigo-400 transition-colors duration-300">
+
+                        ${{ product.price }}
+
+                    </span>
+
+                </div>
+
+                <p class="mt-8 text-gray-600 dark:text-gray-300 leading-8 transition-colors duration-300">
+
+                    {{ product.description }}
+
+                </p>
+
+                <form
+                    id="addToCartForm"
+                    action="{% url 'cart_add' product.id %}"
+                    method="post"
+                    class="mt-10">
+
+                    {% csrf_token %}
+
+                    <input
+                        type="hidden"
+                        id="hiddenQuantity"
+                        name="quantity"
+                        value="1">
+
+                    <!-- Quantity -->
+
+                    <div class="flex items-center gap-5">
+
+                        <div class="flex items-center border border-gray-300 dark:border-gray-700 rounded-2xl overflow-hidden bg-white dark:bg-gray-900 transition-colors duration-300">
+
+                            <button
+                                type="button"
+                                onclick="decreaseQty()"
+                                class="w-14 h-14 text-2xl hover:bg-gray-100 dark:hover:bg-gray-800 transition">
+
+                                −
+
+                            </button>
+
+                            <input
+                                id="quantity"
+                                type="number"
+                                value="1"
+                                min="1"
+                                class="w-16 h-14 text-center outline-none font-bold text-lg bg-transparent text-gray-900 dark:text-white">
+
+                            <button
+                                type="button"
+                                onclick="increaseQty()"
+                                class="w-14 h-14 text-2xl hover:bg-gray-100 dark:hover:bg-gray-800 transition">
+
+                                +
+
+                            </button>
+
+                        </div>
+
+                    </div>
+                                        <!-- Buttons -->
+
+                    <div class="mt-8 flex gap-4">
+
+                        <button
+                            type="submit"
+                            class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl py-4 text-lg font-semibold transition">
+
+                            Add To Cart
+
+                        </button>
+
+                        <button
+                            type="button"
+                            id="wishlistBtn"
+                            data-product="{{ product.id }}"
+                            class="w-16 rounded-2xl border border-gray-300 dark:border-gray-700
+                                   bg-white dark:bg-gray-900
+                                   hover:bg-red-500 hover:text-white
+                                   transition-all duration-300">
+
+                            {% if in_wishlist %}
+
+                                <i class="fa-solid fa-heart text-red-500"></i>
+
+                            {% else %}
+
+                                <i class="fa-solid fa-heart text-red-500"></i>
+
+                            {% endif %}
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+                <button
+                    class="mt-4 w-full
+                           bg-black dark:bg-white
+                           text-white dark:text-black
+                           hover:bg-gray-900 dark:hover:bg-gray-200
+                           rounded-2xl py-4 text-lg font-semibold
+                           transition-all duration-300">
+
+                    Buy Now
+
+                </button>
+
+                <div class="mt-10 space-y-3 text-gray-600 dark:text-gray-300 transition-colors duration-300">
+
+                    <p>
+
+                        <i class="fa-solid fa-circle-check text-green-500 mr-2"></i>
+
+                        In Stock
+
+                    </p>
+
+                    <p>
+
+                        <i class="fa-solid fa-truck-fast text-indigo-500 mr-2"></i>
+
+                        Free Shipping
+
+                    </p>
+
+                    <p>
+
+                        <i class="fa-solid fa-lock text-green-500 mr-2"></i>
+
+                        Secure Payment
+
+                    </p>
+
+                    <p>
+
+                        <i class="fa-solid fa-rotate-left text-blue-500 mr-2"></i>
+
+                        30-Day Return
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+
+function changeImage(element){
+
+    document.getElementById("mainImage").src = element.src;
+
+    document.querySelectorAll(".thumb").forEach(function(img){
+
+        img.classList.remove("border-indigo-600");
+        img.classList.add("border-transparent");
+
+    });
+
+    element.classList.remove("border-transparent");
+    element.classList.add("border-indigo-600");
+
+}
+
+function increaseQty(){
+
+    let input = document.getElementById("quantity");
+
+    input.value = parseInt(input.value) + 1;
+
+    document.getElementById("hiddenQuantity").value = input.value;
+
+}
+
+function decreaseQty(){
+
+    let input = document.getElementById("quantity");
+
+    if(parseInt(input.value) > 1){
+
+        input.value = parseInt(input.value) - 1;
+
+    }
+
+    document.getElementById("hiddenQuantity").value = input.value;
+
+}
+
+
+// ===== Wishlist =====
+
+const wishlistBtn = document.getElementById("wishlistBtn");
+
+if(wishlistBtn){
+
+    wishlistBtn.addEventListener("click",function(){
+
+        fetch(`/wishlist/${this.dataset.product}/`,{
+
+            method:"POST",
+
+            headers:{
+                "X-CSRFToken":document.querySelector("[name=csrfmiddlewaretoken]").value,
+                "X-Requested-With":"XMLHttpRequest"
+            }
+
+        })
+
+        .then(response=>response.json())
+
+        .then(data=>{
+
+            wishlistBtn.innerHTML = data.liked
+
+            ? '<i class="fa-solid fa-heart text-red-500"></i>'
+
+            : '<i class="fa-regular fa-heart"></i>';
+
+            wishlistBtn.classList.add("heart-pop");
+
+            setTimeout(function(){
+
+                wishlistBtn.classList.remove("heart-pop");
+
+            },350);
+
+        });
+
+    });
+
+}
+
+
+// ===== Add To Cart =====
+
+const addToCartForm = document.getElementById("addToCartForm");
+
+addToCartForm.addEventListener("submit",function(e){
+
+    e.preventDefault();
+
+    fetch(this.action,{
+
+        method:"POST",
+
+        body:new FormData(this),
+
+        headers:{
+            "X-Requested-With":"XMLHttpRequest"
+        }
+
+    })
+
+    .then(response=>response.json())
+
+    .then(data=>{
+
+        if(data.success){
+
+            fetch("/cart/drawer/")
+
+            .then(response=>response.json())
+
+            .then(drawer=>{
+
+                document.getElementById("cartCount").innerText = drawer.count;
+
+                document.getElementById("cartDrawerBody").innerHTML = drawer.html;
+
+                document.getElementById("cartTotal").innerText = "$" + drawer.total;
+
+                document.getElementById("cartDrawer")
+                    .classList.remove("translate-x-full");
+
+            });
+
+        }
+
+    });
+
+});
+
+</script>
+
+{% endblock %}

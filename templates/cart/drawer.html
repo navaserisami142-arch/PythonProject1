@@ -1,0 +1,61 @@
+{% if cart %}
+
+    {% for item in cart %}
+
+    <div class="flex items-center gap-4 py-4 border-b">
+
+        {% if item.product.image %}
+            <img
+                src="{{ item.product.image.url }}"
+                class="w-20 h-20 rounded-xl object-cover">
+        {% else %}
+            <div class="w-20 h-20 rounded-xl bg-gray-200 flex items-center justify-center">
+                <i class="fa-solid fa-image text-gray-500 text-2xl"></i>
+            </div>
+        {% endif %}
+
+        <div class="flex-1">
+
+            <h3 class="font-semibold text-gray-800">
+                {{ item.product.name }}
+            </h3>
+
+            <p class="text-sm text-gray-500">
+                Qty : {{ item.quantity }}
+            </p>
+
+            <p class="font-bold text-indigo-600">
+                ${{ item.total_price }}
+            </p>
+
+        </div>
+
+        <button
+            class="drawer-remove flex items-center justify-center w-10 h-10 rounded-full bg-red-50 hover:bg-red-500 hover:text-white transition"
+            data-id="{{ item.product.id }}">
+
+            <i class="fa-solid fa-trash"></i>
+
+        </button>
+
+    </div>
+
+    {% endfor %}
+
+{% else %}
+
+<div class="text-center py-12">
+
+    <i class="fa-solid fa-cart-shopping text-6xl text-gray-300 mb-5"></i>
+
+    <h3 class="text-xl font-bold text-gray-700">
+        Your cart is empty
+    </h3>
+
+    <p class="text-gray-500 mt-2">
+        Add some products to start shopping.
+    </p>
+
+</div>
+
+{% endif %}

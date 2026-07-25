@@ -1,0 +1,831 @@
+{% load static %}
+
+<a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[999] focus:px-4 focus:py-2 focus:rounded-xl focus:bg-neutral-900 focus:text-white focus:text-sm focus:font-semibold">
+    Skip to content
+</a>
+
+<nav id="main-navbar" class="sticky top-0 z-50 w-full transition-colors duration-300">
+    <div class="navbar-bg absolute inset-0 bg-white/70 dark:bg-neutral-950/70 backdrop-blur-2xl backdrop-saturate-150 border-b border-black/5 dark:border-white/10 shadow-[0_1px_20px_rgba(0,0,0,0.04)] dark:shadow-[0_1px_20px_rgba(0,0,0,0.4)] transition-shadow duration-300"></div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="navbar-inner flex items-center justify-between h-20 transition-[height] duration-300">
+
+            <!-- ============ LOGO ============ -->
+            <a href="{% url 'home' %}" class="group flex items-center gap-3 shrink-0">
+                <div class="relative w-11 h-11 rounded-2xl bg-gradient-to-br from-indigo-500 via-violet-500 to-fuchsia-500 shadow-lg shadow-violet-500/30 flex items-center justify-center overflow-hidden transition-transform duration-300 ease-out group-hover:scale-105 group-hover:rotate-3">
+                    <span class="text-white font-extrabold text-xl tracking-tight drop-shadow-sm">S</span>
+                    <div class="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                </div>
+                <div class="hidden sm:flex flex-col leading-tight">
+                    <span class="text-lg font-bold tracking-tight text-neutral-900 dark:text-white">Sam Store</span>
+                    <span class="text-[11px] font-medium tracking-wide text-neutral-400 dark:text-neutral-500 uppercase">Premium Shopping</span>
+                </div>
+            </a>
+
+            <!-- ============ DESKTOP MENU ============ -->
+            <div class="hidden lg:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
+                <a href="{% url 'home' %}" class="nav-link relative px-4 py-2 text-sm font-semibold text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white transition-colors duration-200">
+                    <span class="relative z-10">Home</span>
+                    <span class="nav-underline"></span>
+                </a>
+                <a href="{% url 'product_list' %}" class="nav-link relative px-4 py-2 text-sm font-semibold text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white transition-colors duration-200">
+                    <span class="relative z-10">Shop</span>
+                    <span class="nav-underline"></span>
+                </a>
+                <a href="{% url 'product_list' %}" class="nav-link relative px-4 py-2 text-sm font-semibold text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white transition-colors duration-200">
+                    <span class="relative z-10">Categories</span>
+                    <span class="nav-underline"></span>
+                </a>
+                <a href="{% url 'about' %}" class="nav-link relative px-4 py-2 text-sm font-semibold text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white transition-colors duration-200">
+                    <span class="relative z-10">About</span>
+                    <span class="nav-underline"></span>
+                </a>
+                <a href="{% url 'contact' %}" class="nav-link relative px-4 py-2 text-sm font-semibold text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white transition-colors duration-200">
+                    <span class="relative z-10">Contact</span>
+                    <span class="nav-underline"></span>
+                </a>
+            </div>
+
+            <!-- ============ RIGHT SIDE ============ -->
+            <div class="flex items-center gap-2">
+
+                <!-- Search Button -->
+                <button id="search-btn" type="button" aria-label="Search" aria-haspopup="dialog" aria-controls="search-panel" aria-expanded="false" class="icon-btn group hidden sm:flex">
+                    <i class="fa-solid fa-magnifying-glass text-[15px] transition-transform duration-300 group-hover:scale-110" aria-hidden="true"></i>
+                </button>
+
+                <!-- Dark Mode Toggle -->
+                <button id="theme-toggle"
+        type="button"
+        aria-label="Toggle dark mode"
+        class="icon-btn w-10 h-10 flex items-center justify-center relative">
+
+    <i id="icon-moon"
+       class="fa-solid fa-moon absolute"></i>
+
+    <i id="icon-sun"
+       class="fa-solid fa-sun absolute"
+       style="display:none;"></i>
+
+</button>
+
+                <!-- Wishlist -->
+                <a href="{% url 'wishlist' %}" aria-label="Wishlist{% if wishlist_count > 0 %}, {{ wishlist_count }} items{% endif %}" class="icon-btn group relative hover:!text-pink-500">
+                    <i class="fa-solid fa-heart text-[15px] transition-transform duration-300 group-hover:scale-110" aria-hidden="true"></i>
+                    {% if wishlist_count > 0 %}
+                    <span class="badge bg-gradient-to-br from-pink-500 to-rose-500">{{ wishlist_count }}</span>
+                    {% endif %}
+                </a>
+
+                <!-- Cart -->
+                <button id="cart-btn" type="button" aria-label="Cart{% if cart|length > 0 %}, {{ cart|length }} items{% endif %}" aria-haspopup="dialog" aria-controls="cart-drawer" aria-expanded="false" class="icon-btn group relative">
+                    <i id="cart-icon" class="fa-solid fa-bag-shopping text-[15px] transition-transform duration-300 group-hover:scale-110" aria-hidden="true"></i>
+                    {% if cart|length > 0 %}
+                    <span class="badge bg-gradient-to-br from-indigo-500 to-violet-500">{{ cart|length }}</span>
+                    {% endif %}
+                </button>
+
+                <!-- User Section -->
+                <div class="relative ml-1" id="user-dropdown-wrapper">
+                    {% if user.is_authenticated %}
+                    <button id="user-menu-btn" type="button" aria-haspopup="true" aria-controls="user-dropdown" aria-expanded="false" class="flex items-center gap-2 pl-1.5 pr-3 py-1.5 rounded-full border border-black/5 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 transition-colors duration-200">
+                        <div class="w-8 h-8 rounded-full overflow-hidden bg-gradient-to-br from-indigo-500 to-fuchsia-500 flex items-center justify-center shrink-0">
+                            {% if user.profile.avatar %}
+                            <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}" class="w-full h-full object-cover">
+                            {% else %}
+                            <span class="text-white text-sm font-bold">{{ user.username|first|upper }}</span>
+                            {% endif %}
+                        </div>
+                        <span class="hidden md:block text-sm font-semibold text-neutral-700 dark:text-neutral-200 max-w-[90px] truncate">{{ user.username }}</span>
+                        <i id="user-chevron" class="fa-solid fa-chevron-down text-[10px] text-neutral-400 hidden md:block transition-transform duration-300" aria-hidden="true"></i>
+                    </button>
+
+                    <div id="user-dropdown" class="dropdown-panel absolute right-0 mt-3 w-60 origin-top-right" role="menu">
+                        <div class="rounded-2xl bg-white/90 dark:bg-neutral-900/90 backdrop-blur-xl border border-black/5 dark:border-white/10 shadow-2xl shadow-black/10 overflow-hidden">
+                            <div class="px-4 py-3.5 border-b border-black/5 dark:border-white/10">
+                                <p class="text-sm font-semibold text-neutral-900 dark:text-white truncate">{{ user.username }}</p>
+                                <p class="text-xs text-neutral-400 dark:text-neutral-500 truncate">{{ user.email }}</p>
+                            </div>
+                            <div class="py-2">
+                                <a href="{% url 'profile' %}" class="dropdown-item" role="menuitem">
+                                    <i class="fa-solid fa-user w-4 text-neutral-400" aria-hidden="true"></i>
+                                    <span>My Profile</span>
+                                </a>
+                                <a href="{% url 'my_orders' %}" class="dropdown-item" role="menuitem">
+                                    <i class="fa-solid fa-box w-4 text-neutral-400" aria-hidden="true"></i>
+                                    <span>My Orders</span>
+                                </a>
+                            </div>
+                            <div class="py-2 border-t border-black/5 dark:border-white/10">
+                                <a href="{% url 'logout' %}" class="dropdown-item !text-red-500 hover:!bg-red-500/10" role="menuitem">
+                                    <i class="fa-solid fa-arrow-right-from-bracket w-4" aria-hidden="true"></i>
+                                    <span>Logout</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <a href="{% url 'login' %}" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-white bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 shadow-lg shadow-violet-500/30 hover:shadow-xl hover:shadow-violet-500/40 hover:scale-105 active:scale-95 transition-all duration-300">
+                        <i class="fa-solid fa-right-to-bracket text-xs" aria-hidden="true"></i>
+                        <span>Login</span>
+                    </a>
+                    {% endif %}
+                </div>
+
+                <!-- Mobile Hamburger -->
+                <button id="mobile-menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mobile-menu" class="icon-btn lg:hidden">
+                    <div class="relative w-4 h-4 flex flex-col justify-center gap-[5px]">
+                        <span class="hamburger-line block h-[2px] w-4 bg-current rounded-full transition-all duration-300"></span>
+                        <span class="hamburger-line block h-[2px] w-4 bg-current rounded-full transition-all duration-300"></span>
+                        <span class="hamburger-line block h-[2px] w-4 bg-current rounded-full transition-all duration-300"></span>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ MOBILE MENU ============ -->
+    <div id="mobile-menu" class="lg:hidden max-h-0 overflow-hidden transition-all duration-500 ease-in-out relative">
+        <div class="bg-white/90 dark:bg-neutral-950/90 backdrop-blur-2xl border-b border-black/5 dark:border-white/10 px-4 pb-6 pt-2 space-y-1">
+            <a href="{% url 'home' %}" class="mobile-link"><i class="fa-solid fa-house w-5 text-neutral-400" aria-hidden="true"></i><span>Home</span></a>
+            <a href="{% url 'product_list' %}" class="mobile-link"><i class="fa-solid fa-bag-shopping w-5 text-neutral-400" aria-hidden="true"></i><span>Shop</span></a>
+            <a href="{% url 'product_list' %}" class="mobile-link"><i class="fa-solid fa-layer-group w-5 text-neutral-400" aria-hidden="true"></i><span>Categories</span></a>
+            <a href="{% url 'about' %}" class="mobile-link"><i class="fa-solid fa-circle-info w-5 text-neutral-400" aria-hidden="true"></i><span>About</span></a>
+            <a href="{% url 'contact' %}" class="mobile-link"><i class="fa-solid fa-envelope w-5 text-neutral-400" aria-hidden="true"></i><span>Contact</span></a>
+            <div class="pt-3 mt-3 border-t border-black/5 dark:border-white/10">
+                <a href="{% url 'wishlist' %}" class="mobile-link">
+                    <i class="fa-solid fa-heart w-5 text-neutral-400" aria-hidden="true"></i>
+                    <span>Wishlist</span>
+                    {% if wishlist_count > 0 %}<span class="ml-auto text-xs font-bold text-pink-500">{{ wishlist_count }}</span>{% endif %}
+                </a>
+                {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}" class="mobile-link"><i class="fa-solid fa-user w-5 text-neutral-400" aria-hidden="true"></i><span>My Profile</span></a>
+                <a href="{% url 'my_orders' %}" class="mobile-link"><i class="fa-solid fa-box w-5 text-neutral-400" aria-hidden="true"></i><span>My Orders</span></a>
+                <a href="{% url 'logout' %}" class="mobile-link !text-red-500"><i class="fa-solid fa-arrow-right-from-bracket w-5" aria-hidden="true"></i><span>Logout</span></a>
+                {% else %}
+                <a href="{% url 'login' %}" class="mobile-link !text-indigo-500 !font-bold"><i class="fa-solid fa-right-to-bracket w-5" aria-hidden="true"></i><span>Login</span></a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- ============ CART DRAWER ============ -->
+<div id="cart-overlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[60] opacity-0 pointer-events-none transition-opacity duration-400"></div>
+
+<aside id="cart-drawer" class="fixed top-0 right-0 h-full w-full sm:w-[420px] z-[70] translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]" role="dialog" aria-modal="true" aria-labelledby="cart-drawer-title">
+    <div class="h-full flex flex-col bg-white dark:bg-neutral-950 shadow-2xl">
+
+        <div class="flex items-center justify-between px-6 py-5 border-b border-black/5 dark:border-white/10">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-fuchsia-500 flex items-center justify-center">
+                    <i class="fa-solid fa-bag-shopping text-white text-sm" aria-hidden="true"></i>
+                </div>
+                <h2 id="cart-drawer-title" class="text-lg font-bold text-neutral-900 dark:text-white">Shopping Cart</h2>
+            </div>
+            <button id="cart-close-btn" type="button" aria-label="Close cart" class="w-9 h-9 rounded-full flex items-center justify-center text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors duration-200">
+                <i class="fa-solid fa-xmark text-lg" aria-hidden="true"></i>
+            </button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto px-6 py-4 space-y-4">
+            {% for item in cart %}
+            <div class="flex gap-4 p-3 rounded-2xl border border-black/5 dark:border-white/10 hover:border-violet-300 dark:hover:border-violet-500/40 transition-colors duration-300">
+                <div class="w-20 h-20 rounded-xl overflow-hidden bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center shrink-0">
+                    {% if item.product.image %}
+                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="w-full h-full object-cover">
+                    {% else %}
+                    <i class="fa-solid fa-image text-neutral-300 dark:text-neutral-600 text-xl" aria-hidden="true"></i>
+                    {% endif %}
+                </div>
+                <div class="flex-1 min-w-0 flex flex-col justify-between py-0.5">
+                    <div>
+                        <p class="text-sm font-semibold text-neutral-900 dark:text-white truncate">{{ item.product.name }}</p>
+                        <p class="text-xs text-neutral-400 dark:text-neutral-500 mt-0.5">Qty: {{ item.quantity }}</p>
+                    </div>
+                    <p class="text-sm font-bold bg-gradient-to-r from-indigo-500 to-fuchsia-500 bg-clip-text text-transparent">${{ item.total_price }}</p>
+                </div>
+            </div>
+            {% empty %}
+            <div class="flex flex-col items-center justify-center h-full text-center py-16">
+                <div class="w-16 h-16 rounded-full bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center mb-4">
+                    <i class="fa-solid fa-bag-shopping text-2xl text-neutral-300 dark:text-neutral-600" aria-hidden="true"></i>
+                </div>
+                <p class="text-sm font-semibold text-neutral-500 dark:text-neutral-400">Your cart is empty</p>
+                <p class="text-xs text-neutral-400 dark:text-neutral-600 mt-1">Add products to get started</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="px-6 py-5 border-t border-black/5 dark:border-white/10 bg-neutral-50/50 dark:bg-white/[0.02]">
+            <div class="flex items-center justify-between mb-4">
+                <span class="text-sm font-medium text-neutral-500 dark:text-neutral-400">Total</span>
+                <span class="text-xl font-extrabold text-neutral-900 dark:text-white">${{ cart.get_total_price }}</span>
+            </div>
+            <a href="{% url 'cart_detail' %}" class="flex items-center justify-center gap-2 w-full py-3.5 rounded-2xl text-sm font-bold text-white bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 shadow-lg shadow-violet-500/30 hover:shadow-xl hover:shadow-violet-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300">
+                <span>View Cart</span>
+                <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
+            </a>
+        </div>
+    </div>
+</aside>
+
+<!-- ============ SEARCH OVERLAY ============ -->
+<div id="search-overlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[80] opacity-0 pointer-events-none transition-opacity duration-400"></div>
+
+<div id="search-panel" class="fixed top-0 left-0 right-0 z-[90] -translate-y-full transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]" role="dialog" aria-modal="true" aria-labelledby="search-panel-title">
+    <div class="bg-white/95 dark:bg-neutral-950/95 backdrop-blur-2xl border-b border-black/5 dark:border-white/10 shadow-2xl">
+        <div class="max-w-3xl mx-auto px-6 py-10">
+            <div class="flex items-center justify-between mb-6">
+                <h2 id="search-panel-title" class="text-sm font-bold uppercase tracking-widest text-neutral-400 dark:text-neutral-500">Search Sam Store</h2>
+                <button id="search-close-btn" type="button" aria-label="Close search" class="w-9 h-9 rounded-full flex items-center justify-center text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors duration-200">
+                    <i class="fa-solid fa-xmark text-lg" aria-hidden="true"></i>
+                </button>
+            </div>
+            <form id="search-form" action="{% url 'product_list' %}" method="get" class="relative">
+                <i class="fa-solid fa-magnifying-glass absolute left-5 top-1/2 -translate-y-1/2 text-neutral-400 text-lg" aria-hidden="true"></i>
+                <label for="search-input" class="sr-only">Search for products, brands, categories</label>
+                <input
+                    id="search-input"
+                    type="text"
+                    name="q"
+                    autocomplete="off"
+                    placeholder="Search for products, brands, categories..."
+                    class="w-full pl-14 pr-32 py-5 rounded-2xl bg-neutral-100/80 dark:bg-white/5 border border-transparent focus:border-violet-400 dark:focus:border-violet-500/50 focus:bg-white dark:focus:bg-neutral-900 outline-none text-base font-medium text-neutral-900 dark:text-white placeholder:text-neutral-400 transition-all duration-300"
+                >
+                <button type="submit" class="absolute right-2.5 top-1/2 -translate-y-1/2 px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 shadow-lg shadow-violet-500/30 hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300">
+                    Search
+                </button>
+            </form>
+            <div class="flex flex-wrap items-center gap-2 mt-6">
+                <span class="text-xs font-semibold text-neutral-400 dark:text-neutral-500 uppercase tracking-wide mr-1">Trending</span>
+                <a href="{% url 'product_list' %}" class="search-tag">Sneakers</a>
+                <a href="{% url 'product_list' %}" class="search-tag">Accessories</a>
+                <a href="{% url 'product_list' %}" class="search-tag">New Arrivals</a>
+                <a href="{% url 'product_list' %}" class="search-tag">Best Sellers</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============ TOAST NOTIFICATION ============ -->
+<div id="toast" class="fixed top-24 right-6 z-[100] translate-x-[130%] opacity-0 transition-all duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]" role="status" aria-live="polite">
+    <div class="flex items-center gap-3 px-5 py-4 rounded-2xl bg-white dark:bg-neutral-900 shadow-2xl shadow-black/20 border border-black/5 dark:border-white/10 min-w-[280px]">
+        <div class="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center shrink-0">
+            <i class="fa-solid fa-check text-white text-xs" aria-hidden="true"></i>
+        </div>
+        <p id="toast-message" class="text-sm font-semibold text-neutral-800 dark:text-neutral-100">Done</p>
+    </div>
+</div>
+
+<style>
+    .icon-btn {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 42px;
+        border-radius: 9999px;
+        color: rgb(82 82 82);
+        transition: color .2s ease, background-color .2s ease, transform .2s ease;
+    }
+    .dark .icon-btn { color: rgb(212 212 212); }
+    .icon-btn:hover {
+        background-color: rgba(0,0,0,0.05);
+        color: rgb(23 23 23);
+        transform: translateY(-1px);
+    }
+    .dark .icon-btn:hover {
+        background-color: rgba(255,255,255,0.08);
+        color: rgb(255 255 255);
+    }
+
+    .badge {
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        min-width: 16px;
+        height: 16px;
+        padding: 0 4px;
+        border-radius: 9999px;
+        color: white;
+        font-size: 10px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid white;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+    .dark .badge { border-color: rgb(10 10 10); }
+
+    .nav-underline {
+        position: absolute;
+        left: 16px;
+        right: 16px;
+        bottom: 4px;
+        height: 2px;
+        border-radius: 9999px;
+        background: linear-gradient(90deg, #6366f1, #a855f7, #ec4899);
+        transform: scaleX(0);
+        transform-origin: center;
+        transition: transform .35s cubic-bezier(0.19,1,0.22,1);
+    }
+    .nav-link:hover .nav-underline { transform: scaleX(1); }
+    .nav-link.active .nav-underline { transform: scaleX(1); }
+    .nav-link.active span:first-child { color: rgb(23 23 23); }
+    .dark .nav-link.active span:first-child { color: white; }
+
+    .dropdown-panel {
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-8px) scale(0.97);
+        transition: opacity .25s ease, transform .25s cubic-bezier(0.19,1,0.22,1), visibility .25s;
+    }
+    .dropdown-panel.open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0) scale(1);
+    }
+
+    .dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 16px;
+        font-size: 13.5px;
+        font-weight: 600;
+        color: rgb(64 64 64);
+        transition: background-color .2s ease, color .2s ease, padding-left .2s ease;
+    }
+    .dark .dropdown-item { color: rgb(212 212 212); }
+    .dropdown-item:hover {
+        background-color: rgba(99,102,241,0.08);
+        color: rgb(79 70 229);
+        padding-left: 20px;
+    }
+
+    .mobile-link {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 14px;
+        border-radius: 14px;
+        font-size: 14px;
+        font-weight: 600;
+        color: rgb(64 64 64);
+        transition: background-color .2s ease, color .2s ease;
+    }
+    .dark .mobile-link { color: rgb(229 229 229); }
+    .mobile-link:hover {
+        background-color: rgba(99,102,241,0.08);
+        color: rgb(79 70 229);
+    }
+
+    .search-tag {
+        padding: 6px 14px;
+        border-radius: 9999px;
+        font-size: 12.5px;
+        font-weight: 600;
+        color: rgb(82 82 82);
+        background-color: rgba(0,0,0,0.05);
+        transition: background-color .2s ease, color .2s ease, transform .2s ease;
+    }
+    .dark .search-tag { color: rgb(212 212 212); background-color: rgba(255,255,255,0.06); }
+    .search-tag:hover {
+        color: white;
+        background: linear-gradient(90deg, #6366f1, #a855f7);
+        transform: translateY(-1px);
+    }
+
+    #cart-drawer.open { transform: translateX(0); }
+    #cart-overlay.open { opacity: 1; pointer-events: auto; }
+    #search-panel.open { transform: translateY(0); }
+    #search-overlay.open { opacity: 1; pointer-events: auto; }
+    #toast.show { transform: translateX(0); opacity: 1; }
+
+    #cart-icon.bump { animation: cartBump .5s cubic-bezier(0.36,0.07,0.19,0.97); }
+    @keyframes cartBump {
+        0% { transform: scale(1); }
+        30% { transform: scale(1.3) rotate(-8deg); }
+        60% { transform: scale(0.95) rotate(4deg); }
+        100% { transform: scale(1) rotate(0); }
+    }
+
+    #mobile-menu-btn.open .hamburger-line:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    #mobile-menu-btn.open .hamburger-line:nth-child(2) { opacity: 0; }
+    #mobile-menu-btn.open .hamburger-line:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    @media (prefers-reduced-motion: reduce) {
+        * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+    }
+
+    #main-navbar.scrolled .navbar-inner { height: 68px; }
+    #main-navbar.scrolled .navbar-bg { box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
+    .dark #main-navbar.scrolled .navbar-bg { box-shadow: 0 8px 30px rgba(0,0,0,0.5); }
+
+    #main-navbar a:focus-visible,
+    #main-navbar button:focus-visible,
+    #mobile-menu a:focus-visible,
+    #cart-drawer a:focus-visible,
+    #search-panel input:focus-visible,
+    #search-panel a:focus-visible,
+    #search-panel button:focus-visible {
+        outline: 2px solid #8b5cf6;
+        outline-offset: 2px;
+        border-radius: 8px;
+    }
+</style>
+
+<script>
+    (function () {
+        'use strict';
+
+        /* -----------------------------------------------------------------
+           Shared helpers
+        ----------------------------------------------------------------- */
+        var closers = {
+            cart: function () {},
+            userDropdown: function () {},
+            mobileMenu: function () {},
+            search: function () {}
+        };
+
+        function closeAllExcept(except) {
+            Object.keys(closers).forEach(function (key) {
+                if (key !== except) closers[key]();
+            });
+        }
+
+        /* -----------------------------------------------------------------
+           Theme (dark mode) toggle
+        ----------------------------------------------------------------- */
+        function initDarkMode() {
+
+    const root = document.documentElement;
+
+    const themeToggle = document.getElementById("theme-toggle");
+
+    const moon = document.getElementById("icon-moon");
+
+    const sun = document.getElementById("icon-sun");
+
+    if (!themeToggle) return;
+
+    function updateIcons() {
+
+        if (root.classList.contains("dark")) {
+
+            moon.style.display = "none";
+
+            sun.style.display = "block";
+
+        } else {
+
+            moon.style.display = "block";
+
+            sun.style.display = "none";
+
+        }
+
+    }
+
+    if (localStorage.getItem("theme") === "dark") {
+
+        root.classList.add("dark");
+
+    }
+
+    updateIcons();
+
+    themeToggle.addEventListener("click", function () {
+
+        root.classList.toggle("dark");
+
+        if (root.classList.contains("dark")) {
+
+            localStorage.setItem("theme", "dark");
+
+        } else {
+
+            localStorage.setItem("theme", "light");
+
+        }
+
+        updateIcons();
+
+    });
+
+}
+
+        /* -----------------------------------------------------------------
+           Cart drawer
+        ----------------------------------------------------------------- */
+        function initCartDrawer() {
+            var cartBtn = document.getElementById('cart-btn');
+            var cartCloseBtn = document.getElementById('cart-close-btn');
+            var cartDrawer = document.getElementById('cart-drawer');
+            var cartOverlay = document.getElementById('cart-overlay');
+            var cartIcon = document.getElementById('cart-icon');
+
+            if (!cartBtn || !cartDrawer || !cartOverlay) return;
+
+            function open() {
+                closeAllExcept('cart');
+                cartDrawer.classList.add('open');
+                cartOverlay.classList.add('open');
+                cartBtn.setAttribute('aria-expanded', 'true');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function close() {
+                cartDrawer.classList.remove('open');
+                cartOverlay.classList.remove('open');
+                cartBtn.setAttribute('aria-expanded', 'false');
+                document.body.style.overflow = '';
+            }
+
+            cartBtn.addEventListener('click', function () {
+                if (cartIcon) {
+                    cartIcon.classList.remove('bump');
+                    void cartIcon.offsetWidth;
+                    cartIcon.classList.add('bump');
+                }
+                open();
+            });
+
+            if (cartCloseBtn) cartCloseBtn.addEventListener('click', close);
+            cartOverlay.addEventListener('click', close);
+
+            closers.cart = close;
+            window.openCartDrawer = open;
+            window.closeCartDrawer = close;
+        }
+
+        /* -----------------------------------------------------------------
+           User dropdown
+        ----------------------------------------------------------------- */
+        function initUserDropdown() {
+            var wrapper = document.getElementById('user-dropdown-wrapper');
+            var userBtn = document.getElementById('user-menu-btn');
+            var userDropdown = document.getElementById('user-dropdown');
+            var userChevron = document.getElementById('user-chevron');
+
+            if (!userBtn || !userDropdown || !wrapper) return;
+
+            function close() {
+                userDropdown.classList.remove('open');
+                userBtn.setAttribute('aria-expanded', 'false');
+                if (userChevron) userChevron.style.transform = 'rotate(0deg)';
+            }
+
+            function open() {
+                closeAllExcept('userDropdown');
+                userDropdown.classList.add('open');
+                userBtn.setAttribute('aria-expanded', 'true');
+                if (userChevron) userChevron.style.transform = 'rotate(180deg)';
+            }
+
+            userBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                var isOpen = userDropdown.classList.contains('open');
+                isOpen ? close() : open();
+            });
+
+            document.addEventListener('click', function (e) {
+                if (!wrapper.contains(e.target)) close();
+            });
+
+            closers.userDropdown = close;
+        }
+
+        /* -----------------------------------------------------------------
+           Mobile menu
+        ----------------------------------------------------------------- */
+        function initMobileMenu() {
+            var menuBtn = document.getElementById('mobile-menu-btn');
+            var mobileMenu = document.getElementById('mobile-menu');
+
+            if (!menuBtn || !mobileMenu) return;
+
+            function close() {
+                mobileMenu.style.maxHeight = '0px';
+                menuBtn.classList.remove('open');
+                menuBtn.setAttribute('aria-expanded', 'false');
+            }
+
+            function open() {
+                closeAllExcept('mobileMenu');
+                mobileMenu.style.maxHeight = mobileMenu.scrollHeight + 'px';
+                menuBtn.classList.add('open');
+                menuBtn.setAttribute('aria-expanded', 'true');
+            }
+
+            menuBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                var isOpen = menuBtn.classList.contains('open');
+                isOpen ? close() : open();
+            });
+
+            document.addEventListener('click', function (e) {
+                if (!mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) close();
+            });
+
+            closers.mobileMenu = close;
+        }
+
+        /* -----------------------------------------------------------------
+           Search overlay
+        ----------------------------------------------------------------- */
+        function initSearchOverlay() {
+            var searchBtn = document.getElementById('search-btn');
+            var searchCloseBtn = document.getElementById('search-close-btn');
+            var searchOverlay = document.getElementById('search-overlay');
+            var searchPanel = document.getElementById('search-panel');
+            var searchInput = document.getElementById('search-input');
+
+            if (!searchBtn || !searchPanel || !searchOverlay) return;
+
+            function open() {
+                closeAllExcept('search');
+                searchPanel.classList.add('open');
+                searchOverlay.classList.add('open');
+                searchBtn.setAttribute('aria-expanded', 'true');
+                document.body.style.overflow = 'hidden';
+                setTimeout(function () {
+                    if (searchInput) searchInput.focus();
+                }, 300);
+            }
+
+            function close() {
+                searchPanel.classList.remove('open');
+                searchOverlay.classList.remove('open');
+                searchBtn.setAttribute('aria-expanded', 'false');
+                document.body.style.overflow = '';
+            }
+
+            searchBtn.addEventListener('click', open);
+            if (searchCloseBtn) searchCloseBtn.addEventListener('click', close);
+            searchOverlay.addEventListener('click', close);
+
+            document.addEventListener('keydown', function (e) {
+                var isTyping = ['INPUT', 'TEXTAREA'].indexOf(document.activeElement.tagName) !== -1;
+                if (e.key === '/' && !isTyping) {
+                    e.preventDefault();
+                    open();
+                }
+            });
+
+            closers.search = close;
+        }
+
+        /* -----------------------------------------------------------------
+           Toast notification
+        ----------------------------------------------------------------- */
+        function initToast() {
+            var toast = document.getElementById('toast');
+            var toastMessage = document.getElementById('toast-message');
+            var toastTimer = null;
+
+            if (!toast || !toastMessage) return;
+
+            window.showToast = function (message) {
+                toastMessage.textContent = message || 'Done';
+                toast.classList.add('show');
+                clearTimeout(toastTimer);
+                toastTimer = setTimeout(function () {
+                    toast.classList.remove('show');
+                }, 3200);
+            };
+        }
+
+        /* -----------------------------------------------------------------
+           Active nav link highlighting
+        ----------------------------------------------------------------- */
+        function initActiveLink() {
+            var path = window.location.pathname;
+            document.querySelectorAll('.nav-link').forEach(function (link) {
+                if (link.getAttribute('href') === path) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        /* -----------------------------------------------------------------
+           Scroll-aware navbar chrome
+        ----------------------------------------------------------------- */
+        function initScrollEffect() {
+            var navbar = document.getElementById('main-navbar');
+            if (!navbar) return;
+
+            function handleScroll() {
+                navbar.classList.toggle('scrolled', window.scrollY > 12);
+            }
+
+            handleScroll();
+            window.addEventListener('scroll', handleScroll, { passive: true });
+        }
+
+        /* -----------------------------------------------------------------
+           Global Escape key support
+        ----------------------------------------------------------------- */
+        function initEscapeKey() {
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') closeAllExcept(null);
+            });
+        }
+
+        /* -----------------------------------------------------------------
+           Boot
+        ----------------------------------------------------------------- */
+        initDarkMode();
+        initCartDrawer();
+        initUserDropdown();
+        initMobileMenu();
+        initSearchOverlay();
+        initToast();
+        initActiveLink();
+        initScrollEffect();
+        initEscapeKey();
+
+        window.closeCartDrawer = window.closeCartDrawer || function () {};
+        window.closeUserDropdown = closers.userDropdown;
+        window.closeMobileMenu = closers.mobileMenu;
+        window.closeSearchPanel = closers.search;
+        window.showToast = window.showToast || function () {};
+    })();
+
+    const searchInput = document.getElementById("searchInput");
+const resultsBox = document.getElementById("searchResults");
+
+searchInput.addEventListener("keyup", function () {
+
+    const query = this.value;
+
+    if (query.length < 2) {
+        resultsBox.classList.add("hidden");
+        resultsBox.innerHTML = "";
+        return;
+    }
+
+    fetch(`/search/?q=${query}`)
+        .then(response => response.json())
+        .then(data => {
+
+            resultsBox.innerHTML = "";
+
+            if (data.length === 0) {
+
+                resultsBox.innerHTML = `
+                    <div class="p-4 text-center text-gray-500">
+                        No products found
+                    </div>
+                `;
+
+            } else {
+
+                data.forEach(product => {
+
+                    resultsBox.innerHTML += `
+                        <a href="${product.url}"
+                           class="flex items-center gap-4 p-4 hover:bg-gray-100 transition">
+
+                            <img
+                                src="${product.image}"
+                                class="w-16 h-16 rounded-xl object-cover">
+
+                            <div>
+
+                                <h3 class="font-semibold">
+                                    ${product.name}
+                                </h3>
+
+                                <p class="text-indigo-600 font-bold">
+                                    $${product.price}
+                                </p>
+
+                            </div>
+
+                        </a>
+                    `;
+                });
+
+            }
+
+            resultsBox.classList.remove("hidden");
+
+        });
+
+});
+
+document.addEventListener("click", function(e){
+
+    if(!searchInput.contains(e.target) && !resultsBox.contains(e.target)){
+
+        resultsBox.classList.add("hidden");
+
+    }
+
+});
+</script>

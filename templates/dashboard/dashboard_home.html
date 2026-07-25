@@ -1,0 +1,582 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block page_title %}
+Dashboard
+{% endblock %}
+
+{% block content %}
+
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-6">
+
+    <!-- Users -->
+
+    <div class="bg-white rounded-2xl shadow p-6">
+
+        <div class="flex justify-between">
+
+            <div>
+
+                <p class="text-gray-500">
+                    Users
+                </p>
+
+                <h2 class="text-4xl font-bold mt-2">
+                    {{ users_count }}
+                </h2>
+
+            </div>
+
+            <div class="w-14 h-14 rounded-xl bg-blue-100 flex items-center justify-center">
+
+                <i class="fas fa-users text-blue-600 text-2xl"></i>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Products -->
+
+    <div class="bg-white rounded-2xl shadow p-6">
+
+        <div class="flex justify-between">
+
+            <div>
+
+                <p class="text-gray-500">
+                    Products
+                </p>
+
+                <h2 class="text-4xl font-bold mt-2">
+                    {{ products_count }}
+                </h2>
+
+            </div>
+
+            <div class="w-14 h-14 rounded-xl bg-green-100 flex items-center justify-center">
+
+                <i class="fas fa-box text-green-600 text-2xl"></i>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Orders -->
+
+    <div class="bg-white rounded-2xl shadow p-6">
+
+        <div class="flex justify-between">
+
+            <div>
+
+                <p class="text-gray-500">
+                    Orders
+                </p>
+
+                <h2 class="text-4xl font-bold mt-2">
+                    {{ orders_count }}
+                </h2>
+
+            </div>
+
+            <div class="w-14 h-14 rounded-xl bg-yellow-100 flex items-center justify-center">
+
+                <i class="fas fa-shopping-cart text-yellow-600 text-2xl"></i>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Reviews -->
+
+    <div class="bg-white rounded-2xl shadow p-6">
+
+        <div class="flex justify-between">
+
+            <div>
+
+                <p class="text-gray-500">
+                    Reviews
+                </p>
+
+                <h2 class="text-4xl font-bold mt-2">
+                    {{ reviews_count }}
+                </h2>
+
+            </div>
+
+            <div class="w-14 h-14 rounded-xl bg-purple-100 flex items-center justify-center">
+
+                <i class="fas fa-star text-purple-600 text-2xl"></i>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Sales -->
+
+    <div class="bg-white rounded-2xl shadow p-6">
+
+        <div class="flex justify-between">
+
+            <div>
+
+                <p class="text-gray-500">
+                    Total Sales
+                </p>
+
+                <h2 class="text-3xl font-bold mt-2">
+
+                    ${{ total_sales }}
+
+                </h2>
+
+            </div>
+
+            <div class="w-14 h-14 rounded-xl bg-red-100 flex items-center justify-center">
+
+                <i class="fas fa-dollar-sign text-red-600 text-2xl"></i>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Quick Actions -->
+
+<div class="mt-10 grid md:grid-cols-4 gap-6">
+
+    <a href="/admin/products/product/add/" class="bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl p-6 text-center shadow">
+
+        <i class="fas fa-plus-circle text-3xl mb-3"></i>
+
+        <p class="font-bold">
+
+            Add Product
+
+        </p>
+
+    </a>
+
+    <a href="/admin/products/category/add/" class="bg-green-600 hover:bg-green-700 text-white rounded-2xl p-6 text-center shadow">
+
+        <i class="fas fa-tags text-3xl mb-3"></i>
+
+        <p class="font-bold">
+
+            Add Category
+
+        </p>
+
+    </a>
+
+    <a href="/admin/orders/order/" class="bg-yellow-500 hover:bg-yellow-600 text-white rounded-2xl p-6 text-center shadow">
+
+        <i class="fas fa-shopping-bag text-3xl mb-3"></i>
+
+        <p class="font-bold">
+
+            Orders
+
+        </p>
+
+    </a>
+
+    <a href="/admin/auth/user/" class="bg-blue-600 hover:bg-blue-700 text-white rounded-2xl p-6 text-center shadow">
+
+        <i class="fas fa-user-plus text-3xl mb-3"></i>
+
+        <p class="font-bold">
+
+            Users
+
+        </p>
+
+    </a>
+
+</div>
+
+<!-- Charts -->
+
+<div class="grid xl:grid-cols-2 gap-8 mt-10">
+
+    <div class="bg-white rounded-2xl shadow p-8">
+
+        <h3 class="text-xl font-bold mb-6">
+
+            Sales Chart
+
+        </h3>
+
+        <canvas id="salesChart"></canvas>
+
+    </div>
+
+    <div class="bg-white rounded-2xl shadow p-8">
+
+        <h3 class="text-xl font-bold mb-6">
+
+            Orders Chart
+
+        </h3>
+
+        <canvas id="ordersChart"></canvas>
+
+    </div>
+
+</div>
+<!-- Latest Orders -->
+
+<div class="mt-10 bg-white rounded-2xl shadow p-8">
+
+    <div class="flex justify-between items-center mb-6">
+
+        <h2 class="text-2xl font-bold">
+
+            Latest Orders
+
+        </h2>
+
+        <a
+            href="/admin/orders/order/"
+            class="text-indigo-600 font-semibold">
+
+            View All
+
+        </a>
+
+    </div>
+
+    <div class="overflow-x-auto">
+
+        <table class="w-full">
+
+            <thead>
+
+                <tr class="border-b">
+
+                    <th class="text-left py-4">Order</th>
+                    <th class="text-left">Customer</th>
+                    <th>Status</th>
+                    <th>Total</th>
+                    <th>Date</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for order in recent_orders %}
+
+                <tr class="border-b hover:bg-gray-50">
+
+                    <td class="py-4">
+
+                        #{{ order.id }}
+
+                    </td>
+
+                    <td>
+
+                        {{ order.user }}
+
+                    </td>
+
+                    <td>
+
+                        <span class="px-3 py-1 rounded-full bg-indigo-100 text-indigo-700">
+
+                            {{ order.status }}
+
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        ${{ order.get_total_price }}
+
+                    </td>
+
+                    <td>
+
+                        {{ order.created|date:"Y-m-d" }}
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- Latest Users -->
+
+<div class="grid xl:grid-cols-2 gap-8 mt-10">
+
+<div class="bg-white rounded-2xl shadow p-8">
+
+<h2 class="text-2xl font-bold mb-6">
+
+Latest Users
+
+</h2>
+
+{% for user in recent_users %}
+
+<div class="flex items-center justify-between py-4 border-b">
+
+<div class="flex items-center gap-4">
+
+<img
+src="https://ui-avatars.com/api/?name={{ user.username }}"
+class="w-12 h-12 rounded-full">
+
+<div>
+
+<p class="font-bold">
+
+{{ user.username }}
+
+</p>
+
+<p class="text-gray-500 text-sm">
+
+{{ user.email }}
+
+</p>
+
+</div>
+
+</div>
+
+<span class="text-gray-400 text-sm">
+
+{{ user.date_joined|date:"Y-m-d" }}
+
+</span>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+
+<!-- Low Stock -->
+
+<div class="bg-white rounded-2xl shadow p-8">
+
+<h2 class="text-2xl font-bold mb-6">
+
+Low Stock Products
+
+</h2>
+
+{% for product in low_stock_products %}
+
+<div class="flex justify-between py-4 border-b">
+
+<div>
+
+<p class="font-bold">
+
+{{ product.name }}
+
+</p>
+
+</div>
+
+<span class="text-red-600 font-bold">
+
+{{ product.stock }}
+
+</span>
+
+</div>
+
+{% empty %}
+
+<p class="text-green-600">
+
+All products have enough stock.
+
+</p>
+
+{% endfor %}
+
+</div>
+
+</div>
+<!-- Charts Script -->
+
+<script>
+
+const salesChart = document.getElementById('salesChart');
+
+new Chart(salesChart, {
+
+    type: 'line',
+
+    data: {
+
+        labels: [
+
+            'Jan',
+
+            'Feb',
+
+            'Mar',
+
+            'Apr',
+
+            'May',
+
+            'Jun',
+
+            'Jul'
+
+        ],
+
+        datasets: [
+
+            {
+
+                label: 'Sales',
+
+                data: [1200, 1900, 1500, 2500, 2800, 3200, 4100],
+
+                borderColor: '#4F46E5',
+
+                backgroundColor: 'rgba(79,70,229,.2)',
+
+                fill: true,
+
+                tension: .4
+
+            }
+
+        ]
+
+    },
+
+    options: {
+
+        responsive: true,
+
+        plugins: {
+
+            legend: {
+
+                display: false
+
+            }
+
+        }
+
+    }
+
+});
+
+
+const ordersChart = document.getElementById('ordersChart');
+
+new Chart(ordersChart, {
+
+    type: 'bar',
+
+    data: {
+
+        labels: [
+
+            'Jan',
+
+            'Feb',
+
+            'Mar',
+
+            'Apr',
+
+            'May',
+
+            'Jun',
+
+            'Jul'
+
+        ],
+
+        datasets: [
+
+            {
+
+                label: 'Orders',
+
+                data: [5, 8, 10, 14, 18, 21, 30],
+
+                backgroundColor: [
+
+                    '#4F46E5',
+
+                    '#10B981',
+
+                    '#F59E0B',
+
+                    '#EF4444',
+
+                    '#8B5CF6',
+
+                    '#06B6D4',
+
+                    '#22C55E'
+
+                ]
+
+            }
+
+        ]
+
+    },
+
+    options: {
+
+        responsive: true,
+
+        plugins: {
+
+            legend: {
+
+                display: false
+
+            }
+
+        }
+
+    }
+
+});
+
+</script>
+
+</div>
+
+{% endblock %}

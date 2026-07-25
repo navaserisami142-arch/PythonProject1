@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% include "partials/categories.html" %}
+
+{% include "partials/hero.html" %}
+
+{% include "partials/why_choose_us.html" %}
+
+{% include "partials/testimonials.html" %}
+
+{% include "partials/newsletter.html" %}
+
+<section
+    class="max-w-7xl mx-auto px-6 py-16
+           bg-white dark:bg-gray-950
+           transition-colors duration-300">
+
+    <h2
+        class="text-3xl font-bold mb-10
+               text-gray-900 dark:text-white
+               transition-colors duration-300">
+
+        Featured Products
+
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+        {% for product in featured_products %}
+            {% include "partials/product_card.html" %}
+        {% empty %}
+
+        <div class="col-span-full text-center py-16">
+
+            <h3 class="text-xl font-semibold text-gray-700 dark:text-gray-300">
+
+                No featured products found.
+
+            </h3>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% include "partials/footer.html" %}
+
+{% endblock %}

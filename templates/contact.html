@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Contact Us" %}{% endblock %}
+
+{% block content %}
+
+<div class="max-w-4xl mx-auto">
+    <h1 class="text-3xl font-bold text-gray-800 dark:text-white mb-8">{% trans "Contact Us" %}</h1>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+
+        <!-- Form -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-8">
+            <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-6">{% trans "Send us a message" %}</h2>
+            <form class="space-y-4">
+                {% csrf_token %}
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{% trans "Name" %}</label>
+                    <input type="text" placeholder="{% trans 'Your name' %}"
+                           class="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{% trans "Email" %}</label>
+                    <input type="email" placeholder="{% trans 'Your email' %}"
+                           class="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{% trans "Subject" %}</label>
+                    <input type="text" placeholder="{% trans 'Subject' %}"
+                           class="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{% trans "Message" %}</label>
+                    <textarea rows="5" placeholder="{% trans 'Your message' %}"
+                              class="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                </div>
+                <button type="submit"
+                        class="w-full bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700 font-semibold">
+                    {% trans "Send Message" %}
+                </button>
+            </form>
+        </div>
+
+        <!-- Info -->
+        <div class="space-y-6">
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-6">
+                <div class="flex items-center gap-4">
+                    <div class="text-3xl">📧</div>
+                    <div>
+                        <h3 class="font-bold text-gray-800 dark:text-white">{% trans "Email" %}</h3>
+                        <p class="text-gray-500">support@myshop.com</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-6">
+                <div class="flex items-center gap-4">
+                    <div class="text-3xl">📞</div>
+                    <div>
+                        <h3 class="font-bold text-gray-800 dark:text-white">{% trans "Phone" %}</h3>
+                        <p class="text-gray-500">+1 234 567 890</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-6">
+                <div class="flex items-center gap-4">
+                    <div class="text-3xl">📍</div>
+                    <div>
+                        <h3 class="font-bold text-gray-800 dark:text-white">{% trans "Address" %}</h3>
+                        <p class="text-gray-500">123 Shop Street, City, Country</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-6">
+                <div class="flex items-center gap-4">
+                    <div class="text-3xl">🕐</div>
+                    <div>
+                        <h3 class="font-bold text-gray-800 dark:text-white">{% trans "Working Hours" %}</h3>
+                        <p class="text-gray-500">{% trans "Mon - Fri: 9am - 6pm" %}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

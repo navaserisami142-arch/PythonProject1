@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="max-w-7xl mx-auto px-6 py-12">
+
+    <h1 class="text-4xl font-bold mb-10
+               text-gray-900 dark:text-white
+               transition-colors duration-300">
+
+        Checkout
+
+    </h1>
+
+    <div class="grid lg:grid-cols-3 gap-10">
+
+        <!-- فرم اطلاعات -->
+
+        <div class="lg:col-span-2">
+
+            <form method="post"
+                  class="bg-white dark:bg-gray-900
+                         border border-gray-200 dark:border-gray-700
+                         rounded-3xl shadow p-8
+                         transition-all duration-300">
+
+                {% csrf_token %}
+
+                <div class="grid md:grid-cols-2 gap-6">
+
+                    {{ form.first_name }}
+                    {{ form.last_name }}
+
+                    {{ form.email }}
+                    {{ form.phone }}
+
+                    {{ form.city }}
+                    {{ form.postal_code }}
+
+                </div>
+
+                <div class="mt-6">
+
+                    {{ form.address }}
+
+                </div>
+
+                <button
+                    class="mt-8 w-full bg-indigo-600 hover:bg-indigo-700
+                           text-white py-4 rounded-2xl font-bold transition">
+
+                    Place Order
+
+                </button>
+
+            </form>
+
+        </div>
+
+        <!-- خلاصه سفارش -->
+
+        <div>
+
+            <div class="bg-white dark:bg-gray-900
+                        border border-gray-200 dark:border-gray-700
+                        rounded-3xl shadow p-8 sticky top-24
+                        transition-all duration-300">
+
+                <h2 class="text-2xl font-bold mb-6
+                           text-gray-900 dark:text-white">
+
+                    Order Summary
+
+                </h2>
+
+                {% for item in cart %}
+
+                <div class="flex justify-between mb-4">
+
+                    <span class="text-gray-700 dark:text-gray-300">
+
+                        {{ item.product.name }}
+
+                        × {{ item.quantity }}
+
+                    </span>
+
+                    <strong class="text-gray-900 dark:text-white">
+
+                        ${{ item.total_price }}
+
+                    </strong>
+
+                </div>
+
+                {% endfor %}
+
+                <hr class="my-6 border-gray-200 dark:border-gray-700">
+
+                <div class="flex justify-between text-2xl font-bold">
+
+                    <span class="text-gray-900 dark:text-white">
+
+                        Total
+
+                    </span>
+
+                    <span class="text-indigo-600">
+
+                        ${{ cart.get_total_price_after_discount }}
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

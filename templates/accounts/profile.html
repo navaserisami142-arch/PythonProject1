@@ -1,0 +1,347 @@
+{% extends "base.html" %}
+
+{% block title %}
+My Profile | Sam Store
+{% endblock %}
+
+{% block content %}
+
+<div class="bg-gray-50 dark:bg-gray-950 min-h-screen py-12 transition-colors duration-300">
+
+<div class="max-w-6xl mx-auto px-6">
+
+<div class="bg-white dark:bg-gray-900 rounded-3xl shadow-xl p-10 transition-colors duration-300">
+
+<!-- Header -->
+
+<div class="flex flex-col md:flex-row items-center gap-8 mb-12">
+
+<div class="w-32 h-32 rounded-full overflow-hidden border-4 border-indigo-600 shadow">
+
+{% if request.user.profile.avatar %}
+
+<img
+src="{{ request.user.profile.avatar.url }}"
+class="w-full h-full object-cover">
+
+{% else %}
+
+<div class="w-full h-full bg-indigo-600 flex items-center justify-center text-white text-5xl font-bold">
+
+{{ request.user.username|first|upper }}
+
+</div>
+
+{% endif %}
+
+</div>
+
+<div class="flex-1">
+
+<h1 class="text-5xl font-bold">
+
+My Profile
+
+</h1>
+
+<p class="text-gray-500 dark:text-gray-300 mt-3 text-lg">
+
+Welcome back, {{ request.user.username }}
+
+</p>
+
+<p class="text-gray-400 dark:text-gray-500 mt-2">
+
+Manage your personal information and account.
+
+</p>
+
+</div>
+
+</div>
+
+<!-- Statistics -->
+
+<div class="grid grid-cols-2 md:grid-cols-4 gap-5 mb-12">
+
+<div class="bg-indigo-50 dark:bg-indigo-950/40 rounded-2xl p-6 text-center">
+
+<h2 class="text-3xl font-bold text-indigo-600">
+
+{{ orders_count }}
+
+</h2>
+
+<p class="text-gray-500 mt-2">
+
+Orders
+
+</p>
+
+</div>
+
+<div class="bg-red-50 dark:bg-red-950/40 rounded-2xl p-6 text-center">
+
+<h2 class="text-3xl font-bold text-red-500">
+
+{{ wishlist_count }}
+
+</h2>
+
+<p class="text-gray-500 mt-2">
+
+Wishlist
+
+</p>
+
+</div>
+
+<div class="bg-yellow-50 dark:bg-yellow-950/40 rounded-2xl p-6 text-center">
+
+<h2 class="text-3xl font-bold text-yellow-500">
+
+{{ reviews_count }}
+
+</h2>
+
+<p class="text-gray-500 mt-2">
+
+Reviews
+
+</p>
+
+</div>
+
+<div class="rounded-2xl p-6 text-center">
+
+<h2 class="text-bg-green-50 dark:bg-green-950/40 3xl font-bold text-green-600">
+
+{{ cart_count }}
+
+</h2>
+
+<p class="text-gray-500 mt-2">
+
+Cart
+
+</p>
+
+</div>
+
+</div>
+
+<!-- Form -->
+
+<form method="POST" enctype="multipart/form-data">
+
+{% csrf_token %}
+
+<h2 class="text-3xl font-bold mb-8">
+
+Personal Information
+
+</h2>
+
+<div class="grid md:grid-cols-2 gap-8">
+
+<div>
+
+<label class="block mb-2 font-semibold">
+
+First Name
+
+</label>
+
+{{ form.first_name }}
+
+</div>
+
+<div>
+
+<label class="block mb-2 font-semibold">
+
+Last Name
+
+</label>
+
+{{ form.last_name }}
+
+</div>
+
+<div class="md:col-span-2">
+
+<label class="block mb-2 font-semibold">
+
+Email
+
+</label>
+
+{{ form.email }}
+
+</div>
+
+<div>
+
+<label class="block mb-2 font-semibold">
+
+Phone
+
+</label>
+
+{{ profile_form.phone }}
+
+</div>
+
+<div>
+
+<label class="block mb-2 font-semibold">
+
+Birth Date
+
+</label>
+
+{{ profile_form.birth_date }}
+
+</div>
+
+<div class="md:col-span-2">
+
+<label class="block mb-2 font-semibold">
+
+Address
+
+</label>
+
+{{ profile_form.address }}
+
+</div>
+
+<div class="md:col-span-2">
+
+<label class="block mb-2 font-semibold">
+
+Profile Picture
+
+</label>
+
+{{ profile_form.avatar }}
+
+</div>
+
+</div>
+
+<hr class="my-12">
+
+<h2 class="text-3xl font-bold mb-8">
+
+Account Details
+
+</h2>
+
+<div class="grid md:grid-cols-2 gap-6">
+
+<div class="bg-gray-50 dark:bg-gray-800 rounded-2xl p-6 transition-colors duration-300">
+
+<p class="text-gray-500 dark:text-gray-400">
+
+Username
+
+</p>
+
+<h3 class="text-xl font-bold mt-2">
+
+{{ request.user.username }}
+
+</h3>
+
+</div>
+
+<div class="bg-gray-50 dark:bg-gray-800 rounded-2xl p-6 transition-colors duration-300">
+
+<p class="text-gray-500 dark:text-gray-400">
+
+Email
+
+</p>
+
+<h3 class="text-xl font-bold mt-2">
+
+{{ request.user.email }}
+
+</h3>
+
+</div>
+
+<div class="bg-gray-50 dark:bg-gray-800 rounded-2xl p-6 transition-colors duration-300">
+
+<p class="text-gray-500 dark:text-gray-400">
+
+Joined
+
+</p>
+
+<h3 class="text-xl font-bold mt-2">
+
+{{ request.user.date_joined|date:"F d, Y" }}
+
+</h3>
+
+</div>
+
+<div class="bg-gray-50 dark:bg-gray-800 rounded-2xl p-6 transition-colors duration-300">
+
+<p class="text-gray-500 dark:text-gray-400">
+
+Last Login
+
+</p>
+
+<h3 class="text-xl font-bold mt-2">
+
+{{ request.user.last_login|date:"F d, Y" }}
+
+</h3>
+
+</div>
+
+</div>
+
+<!-- Buttons -->
+
+<div class="grid md:grid-cols-3 gap-5 mt-12">
+
+<button
+type="submit"
+class="bg-indigo-600 hover:bg-indigo-700 text-white py-4 rounded-2xl font-bold transition">
+
+Save Changes
+
+</button>
+
+<a
+href="{% url 'change_password' %}"
+class="bg-gray-900 dark:bg-gray-700 hover:bg-black dark:hover:bg-gray-600 text-white py-4 rounded-2xl text-center font-bold transition">
+
+Change Password
+
+</a>
+
+<a
+href="{% url 'my_orders' %}"
+class="bg-green-600 hover:bg-green-700 text-white py-4 rounded-2xl text-center font-bold transition">
+
+My Orders
+
+</a>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

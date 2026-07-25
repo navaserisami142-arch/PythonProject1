@@ -1,0 +1,121 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" id="html">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% block title %}
+            Sam Store
+        {% endblock %}
+    </title>
+
+    <!-- Tailwind CSS -->
+    <link rel="stylesheet" href="{% static 'css/output.css' %}">
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <style>
+
+        body{
+            font-family: Inter,sans-serif;
+        }
+
+        @keyframes heartPop{
+
+            0%{transform:scale(1);}
+            40%{transform:scale(1.35);}
+            100%{transform:scale(1);}
+
+        }
+
+        .heart-pop{
+
+            animation:heartPop .35s ease;
+
+        }
+
+        @keyframes cartBounce{
+
+            0%{transform:scale(1);}
+            25%{transform:scale(1.35) rotate(-10deg);}
+            50%{transform:scale(1.2) rotate(10deg);}
+            75%{transform:scale(1.1) rotate(-5deg);}
+            100%{transform:scale(1);}
+
+        }
+
+        .cart-bounce{
+
+            animation:cartBounce .6s ease;
+
+        }
+
+    </style>
+
+    {% block extra_css %}
+    {% endblock %}
+
+</head>
+
+<body class="bg-gray-50 dark:bg-gray-950 text-gray-800 dark:text-white transition-colors duration-300">
+
+    {% include "partials/navbar.html" %}
+
+    <main class="min-h-screen">
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+    {% block extra_js %}
+    {% endblock %}
+
+    <script>
+
+        const html = document.documentElement;
+
+        if(localStorage.getItem("theme")==="dark"){
+
+            html.classList.add("dark");
+
+        }
+
+        function toggleTheme(){
+
+            html.classList.toggle("dark");
+
+            if(html.classList.contains("dark")){
+
+                localStorage.setItem("theme","dark");
+
+            }else{
+
+                localStorage.setItem("theme","light");
+
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,115 @@
+<section class="bg-white dark:bg-gray-950 py-20 transition-colors duration-300">
+
+    <div class="max-w-7xl mx-auto px-8">
+
+        <div class="grid lg:grid-cols-2 gap-16 items-center">
+
+            <!-- Left -->
+
+            <div>
+
+                <span class="inline-block bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300 px-5 py-2 rounded-full font-semibold mb-6 transition-colors duration-300">
+                    NEW COLLECTION 2025
+                </span>
+
+                <h1 class="text-6xl font-black leading-tight text-gray-900 dark:text-white transition-colors duration-300">
+                    Curated for
+                    <br>
+                    the
+                    <span class="text-indigo-600 dark:text-indigo-400">
+                        world's
+                    </span>
+                    <br>
+                    finest tastes.
+                </h1>
+
+                <p class="mt-8 text-gray-500 dark:text-gray-300 text-lg leading-8 transition-colors duration-300">
+                    A handpicked selection of premium products from
+                    around the world.
+                </p>
+
+                <button class="mt-10 bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-xl transition duration-300 shadow-lg hover:shadow-xl">
+                    Shop Now
+                </button>
+
+            </div>
+
+            <!-- Right -->
+
+            <div class="relative">
+
+                <img
+                    src="/media/hero/hero.jpg"
+                    alt="Hero Image"
+                    class="rounded-3xl shadow-2xl w-full h-[650px] object-cover hover:scale-[1.02] transition duration-500"
+                />
+
+                <!-- Rating Card -->
+
+                <div class="absolute left-0 top-1/2 -translate-x-10 -translate-y-1/2 bg-white dark:bg-gray-900 rounded-2xl shadow-2xl px-6 py-5 transition-colors duration-300">
+
+                    <p class="text-gray-400 dark:text-gray-500 text-xs font-bold uppercase">
+                        Customer Rating
+                    </p>
+
+                    <div class="flex items-center gap-2 mt-2">
+
+                        <span class="text-yellow-400 text-lg">
+                            ★★★★★
+                        </span>
+
+                        <span class="font-bold text-xl text-gray-900 dark:text-white">
+                            4.9
+                        </span>
+
+                    </div>
+
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                        Based on 50,000+ reviews
+                    </p>
+
+                </div>
+
+                <!-- Shipping Card -->
+
+                <div class="absolute -bottom-6 right-6 bg-white dark:bg-gray-900 rounded-2xl shadow-xl px-6 py-4 transition-colors duration-300">
+
+                    <h4 class="font-bold text-gray-900 dark:text-white">
+                        Free Shipping
+                    </h4>
+
+                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                        120+ Countries
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="py-20 bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
+
+    <div class="max-w-7xl mx-auto px-8">
+
+        <h2 class="text-5xl font-bold mb-12 text-gray-900 dark:text-white transition-colors duration-300">
+            Featured Products
+        </h2>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+
+            {% for product in featured_products %}
+
+                {% include "partials/product_card.html" %}
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>

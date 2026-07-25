@@ -1,0 +1,228 @@
+{% extends "base.html" %}
+
+{% block title %}
+Dashboard | Sam Store
+{% endblock %}
+
+{% block content %}
+
+<div class="bg-gray-50 min-h-screen py-12">
+
+    <div class="max-w-7xl mx-auto px-6">
+
+        <!-- Header -->
+
+        <div class="mb-12">
+
+            <h1 class="text-5xl font-black">
+
+                Welcome Back,
+                <span class="text-indigo-600">
+
+                    {{ request.user.first_name|default:request.user.username }}
+
+                </span>
+
+                👋
+
+            </h1>
+
+            <p class="text-gray-500 mt-4">
+
+                Manage your account and orders.
+
+            </p>
+
+        </div>
+
+        <!-- Statistics -->
+
+        <div class="grid md:grid-cols-3 gap-8 mb-12">
+
+            <div class="bg-white rounded-3xl p-8 shadow">
+
+                <h3 class="text-gray-500">
+
+                    Orders
+
+                </h3>
+
+                <h2 class="text-5xl font-black mt-3 text-indigo-600">
+
+                    {{ orders_count }}
+
+                </h2>
+
+            </div>
+
+            <div class="bg-white rounded-3xl p-8 shadow">
+
+                <h3 class="text-gray-500">
+
+                    Wishlist
+
+                </h3>
+
+                <h2 class="text-5xl font-black mt-3 text-red-500">
+
+                    {{ wishlist_count }}
+
+                </h2>
+
+            </div>
+
+            <div class="bg-white rounded-3xl p-8 shadow">
+
+                <h3 class="text-gray-500">
+
+                    Account
+
+                </h3>
+
+                <h2 class="text-2xl font-bold mt-5">
+
+                    Active
+
+                </h2>
+
+            </div>
+
+        </div>
+
+        <!-- Quick Actions -->
+
+        <div class="grid md:grid-cols-2 xl:grid-cols-4 gap-8 mb-12">
+
+            <a href="{% url 'profile' %}"
+               class="bg-white rounded-3xl p-8 shadow hover:shadow-xl transition">
+
+                <h2 class="text-2xl font-bold">
+
+                    Profile
+
+                </h2>
+
+                <p class="text-gray-500 mt-3">
+
+                    Edit your personal information.
+
+                </p>
+
+            </a>
+
+            <a href="{% url 'my_orders' %}"
+               class="bg-white rounded-3xl p-8 shadow hover:shadow-xl transition">
+
+                <h2 class="text-2xl font-bold">
+
+                    Orders
+
+                </h2>
+
+                <p class="text-gray-500 mt-3">
+
+                    View all your orders.
+
+                </p>
+
+            </a>
+
+            <a href="{% url 'change_password' %}"
+               class="bg-white rounded-3xl p-8 shadow hover:shadow-xl transition">
+
+                <h2 class="text-2xl font-bold">
+
+                    Password
+
+                </h2>
+
+                <p class="text-gray-500 mt-3">
+
+                    Change your password.
+
+                </p>
+
+            </a>
+
+            <a href="{% url 'product_list' %}"
+               class="bg-white rounded-3xl p-8 shadow hover:shadow-xl transition">
+
+                <h2 class="text-2xl font-bold">
+
+                    Shop
+
+                </h2>
+
+                <p class="text-gray-500 mt-3">
+
+                    Continue shopping.
+
+                </p>
+
+            </a>
+
+        </div>
+
+        <!-- Recent Orders -->
+
+        <div class="bg-white rounded-3xl shadow p-10">
+
+            <h2 class="text-3xl font-bold mb-8">
+
+                Recent Orders
+
+            </h2>
+
+            {% if recent_orders %}
+
+                {% for order in recent_orders %}
+
+                <div class="flex justify-between items-center border-b py-5">
+
+                    <div>
+
+                        <h3 class="font-bold">
+
+                            Order #{{ order.id }}
+
+                        </h3>
+
+                        <p class="text-gray-500">
+
+                            {{ order.created }}
+
+                        </p>
+
+                    </div>
+
+                    <div>
+
+                        <span class="px-4 py-2 rounded-full bg-indigo-100 text-indigo-600">
+
+                            {{ order.status }}
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <p class="text-gray-500">
+
+                    You don't have any orders yet.
+
+                </p>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
