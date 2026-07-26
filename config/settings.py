@@ -8,10 +8,11 @@ SECRET_KEY = config("SECRET_KEY")
 
 DEBUG = config("DEBUG", default=False, cast=bool)
 
-ALLOWED_HOSTS = config(
-    "ALLOWED_HOSTS",
-    default="127.0.0.1"
-).split(",")
+ALLOWED_HOSTS = [
+    "samstore-p612.onrender.com",
+    "127.0.0.1",
+    "localhost",
+]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://samstore-p612.onrender.com",
