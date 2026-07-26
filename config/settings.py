@@ -1,6 +1,6 @@
 from pathlib import Path
 from decouple import config
-import os
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -12,6 +12,10 @@ ALLOWED_HOSTS = config(
     "ALLOWED_HOSTS",
     default="127.0.0.1"
 ).split(",")
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://samstore-p612.onrender.com",
+]
 
 INSTALLED_APPS = [
     "jazzmin",
@@ -38,6 +42,7 @@ AUTHENTICATION_BACKENDS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
+
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -69,8 +74,8 @@ TEMPLATES = [
 WSGI_APPLICATION = "config.wsgi.application"
 
 DATABASES = {
-    "default": dj_database_url.config(
-        default=config("DATABASE_URL")
+    "default": dj_database_url.parse(
+        config("DATABASE_URL")
     )
 }
 
@@ -104,81 +109,30 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+STATICFILES_STORAGE = (
+    "whitenoise.storage.CompressedManifestStaticFilesStorage"
+)
+
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 LOGIN_REDIRECT_URL = "/accounts/dashboard/"
 LOGOUT_REDIRECT_URL = "/"
+
 SESSION_COOKIE_AGE = 1209600
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-JAZZMIN_SETTINGS = {
-    "site_title": "MyShop Admin",
-    "site_header": "MyShop",
-    "site_brand": "MyShop",
-    "welcome_sign": "Welcome to MyShop Admin Panel",
-    "copyright": "MyShop 2026",
-    "search_model": ["auth.User", "products.Product"],
-    "topmenu_links": [
-        {"name": "Home", "url": "admin:index"},
-        {"name": "Site", "url": "/", "new_window": True},
-    ],
-    "show_sidebar": True,
-    "navigation_expanded": True,
-    "icons": {
-        "auth": "fas fa-users-cog",
-        "auth.user": "fas fa-user",
-        "products.products": "fas fa-box",
-        "products.category": "fas fa-tags",
-        "orders.order": "fas fa-shopping-cart",
-        "products.review": "fas fa-star",
-    },
-    "default_icon_parents": "fas fa-chevron-circle-right",
-    "default_icon_children": "fas fa-circle",
-    "related_modal_active": False,
-    "use_google_fonts_cdn": True,
-    "show_ui_builder": False,
-}
-
-JAZZMIN_UI_TWEAKS = {
-    "navbar_small_text": False,
-    "footer_small_text": False,
-    "body_small_text": False,
-    "brand_small_text": False,
-    "brand_colour": "navbar-primary",
-    "accent": "accent-primary",
-    "navbar": "navbar-white navbar-light",
-    "no_navbar_border": True,
-    "navbar_fixed": True,
-    "layout_boxed": False,
-    "footer_fixed": False,
-    "sidebar_fixed": True,
-    "sidebar": "sidebar-light-primary",
-    "sidebar_nav_small_text": False,
-    "sidebar_disable_expand": False,
-    "sidebar_nav_child_indent": True,
-    "sidebar_nav_compact_style": True,
-    "sidebar_nav_legacy_style": False,
-    "sidebar_nav_flat_style": False,
-    "theme": "flatly",
-    "dark_mode_theme": "darkly",
-}
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 EMAIL_HOST = config("EMAIL_HOST")
 EMAIL_PORT = config("EMAIL_PORT", cast=int)
 EMAIL_USE_TLS = config("EMAIL_USE_TLS", cast=bool)
-
 EMAIL_HOST_USER = config("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
-
 DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL")
 
-
-STATICFILES_STORAGE = (
-    "whitenoise.storage.CompressedManifestStaticFilesStorage"
-)
-
-
+if not DEBUG:
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
