@@ -161,4 +161,4 @@ def home(request):
         "banner": banner,
     }
 
-    return render(request, "home.html", context)
+    return render(request, "products/home.html", context)
