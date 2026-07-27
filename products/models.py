@@ -100,3 +100,13 @@ class Wishlist(models.Model):
 
     def __str__(self):
         return f"{self.user.username} ❤️ {self.product.name}"
+
+
+class HeroBanner(models.Model):
+    title = models.CharField(max_length=200, default="Curated for the world's finest tastes.")
+    subtitle = models.TextField(blank=True)
+    image = models.ImageField(upload_to="hero/")
+    active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.title

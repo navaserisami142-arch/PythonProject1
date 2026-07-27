@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Product, Review, ProductImage, Coupon
+from .models import Category, Product, Review, ProductImage, Coupon, HeroBanner
 
 
 class ProductImageInline(admin.TabularInline):
@@ -23,3 +23,7 @@ class CouponAdmin(admin.ModelAdmin):
 
 admin.site.register(Category)
 admin.site.register(Review)
+
+@admin.register(HeroBanner)
+class HeroBannerAdmin(admin.ModelAdmin):
+    list_display = ("title", "active")
