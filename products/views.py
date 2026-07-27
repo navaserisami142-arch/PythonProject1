@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse
-from .models import Product, Category, Review, Wishlist
+from .models import Product, Category, Review, Wishlist, HeroBanner
 from django.db.models import Q
 
 
@@ -153,3 +153,12 @@ def search_products(request):
 
 def about(request):
     return render(request, "about.html")
+
+def home(request):
+    banner = HeroBanner.objects.filter(active=True).first()
+
+    context = {
+        "banner": banner,
+    }
+
+    return render(request, "home.html", context)
