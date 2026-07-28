@@ -7,6 +7,8 @@ from django.db.models import Q
 
 
 def home(request):
+    banner = HeroBanner.objects.filter(active=True).first()
+
     featured_products = Product.objects.filter(
         available=True,
         featured=True
@@ -14,10 +16,13 @@ def home(request):
 
     categories = Category.objects.all()
 
-    return render(request, "products/home.html", {
+    context = {
+        "banner": banner,
         "featured_products": featured_products,
         "categories": categories,
-    })
+    }
+
+    return render(request, "products/home.html", context)
 
 
 def product_list(request):
@@ -154,11 +159,3 @@ def search_products(request):
 def about(request):
     return render(request, "about.html")
 
-def home(request):
-    banner = HeroBanner.objects.filter(active=True).first()
-
-    context = {
-        "banner": banner,
-    }
-
-    return render(request, "products/home.html", context)
