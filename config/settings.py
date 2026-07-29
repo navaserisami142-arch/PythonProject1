@@ -36,8 +36,8 @@ INSTALLED_APPS = [
     "orders",
     "dashboard",
 
-    "cloudinary",
-    "cloudinary_storage",
+   # "cloudinary",
+   # "cloudinary_storage",
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -148,4 +148,4 @@ cloudinary.config(
     api_secret=config("CLOUDINARY_API_SECRET"),
 )
 
-DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+#DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"

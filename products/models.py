@@ -28,7 +28,6 @@ class Product(models.Model):
     description = models.TextField()
     price = models.IntegerField()
     old_price = models.IntegerField(blank=True, null=True)
-    featured = models.BooleanField(default=False)
     image = models.ImageField(upload_to='products/', blank=True, null=True)
     stock = models.PositiveIntegerField()
     available = models.BooleanField(default=True)
