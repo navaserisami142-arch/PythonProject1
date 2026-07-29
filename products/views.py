@@ -7,7 +7,6 @@ from django.db.models import Q
 
 
 def home(request):
-    banner = HeroBanner.objects.filter(active=True).first()
 
     featured_products = Product.objects.filter(
         available=True,
@@ -17,7 +16,6 @@ def home(request):
     categories = Category.objects.all()
 
     context = {
-        "banner": banner,
         "featured_products": featured_products,
         "categories": categories,
     }
