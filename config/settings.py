@@ -1,7 +1,6 @@
 from pathlib import Path
 from decouple import config
 import dj_database_url
-import cloudinary
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -79,9 +78,7 @@ TEMPLATES = [
 WSGI_APPLICATION = "config.wsgi.application"
 
 DATABASES = {
-    "default": dj_database_url.parse(
-        config("DATABASE_URL")
-    )
+    "default": dj_database_url.parse(config("DATABASE_URL"))
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -106,6 +103,10 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
+# ----------------------
+# Static Files
+# ----------------------
+
 STATIC_URL = "/static/"
 
 STATICFILES_DIRS = [
@@ -114,14 +115,22 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+# ----------------------
+# Media Files
+# ----------------------
+
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
-cloudinary.config(
-    cloud_name=config("CLOUDINARY_CLOUD_NAME"),
-    api_key=config("CLOUDINARY_API_KEY"),
-    api_secret=config("CLOUDINARY_API_SECRET"),
-)
+# ----------------------
+# Cloudinary
+# ----------------------
+
+CLOUDINARY_STORAGE = {
+    "CLOUD_NAME": config("CLOUDINARY_CLOUD_NAME"),
+    "API_KEY": config("CLOUDINARY_API_KEY"),
+    "API_SECRET": config("CLOUDINARY_API_SECRET"),
+}
 
 STORAGES = {
     "default": {
@@ -152,4 +161,3 @@ if not DEBUG:
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
-
