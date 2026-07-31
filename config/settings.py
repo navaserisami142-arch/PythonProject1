@@ -19,7 +19,7 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 INSTALLED_APPS = [
-    "jazzmin",
+    #"jazzmin",
 
     "django.contrib.admin",
     "django.contrib.auth",
