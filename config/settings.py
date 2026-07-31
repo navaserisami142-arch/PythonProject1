@@ -127,9 +127,9 @@ MEDIA_ROOT = BASE_DIR / "media"
 # ----------------------
 
 CLOUDINARY_STORAGE = {
-    "CLOUD_NAME": config("CLOUDINARY_CLOUD_NAME"),
-    "API_KEY": config("CLOUDINARY_API_KEY"),
-    "API_SECRET": config("CLOUDINARY_API_SECRET"),
+    "CLOUD_NAME": config("jmndminx"),
+    "API_KEY": config("166222996964647"),
+    "API_SECRET": config("AGS_KrZZzIvHiu-BScwotWNvVSE"),
 }
 
 STORAGES = {
