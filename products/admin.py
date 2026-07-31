@@ -12,7 +12,6 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ['name', 'category', 'price', 'stock', 'available']
     list_filter = ['available', 'category']
     list_editable = ['price', 'stock', 'available']
-    inlines = [ProductImageInline]
 
 
 @admin.register(Coupon)
