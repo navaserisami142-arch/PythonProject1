@@ -19,7 +19,7 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 INSTALLED_APPS = [
-    #"jazzmin",
+    "jazzmin",
 
     "django.contrib.admin",
     "django.contrib.auth",
@@ -161,3 +161,23 @@ if not DEBUG:
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
+
+
+JAZZMIN_SETTINGS = {
+    "site_title": "Sam Store Admin",
+    "site_header": "Sam Store",
+    "site_brand": "Sam Store",
+    "welcome_sign": "Welcome to Sam Store",
+    "copyright": "Sam Store",
+
+    "show_sidebar": True,
+    "navigation_expanded": True,
+
+    "icons": {
+        "products.Product": "fas fa-box",
+        "products.Category": "fas fa-tags",
+        "products.Review": "fas fa-star",
+        "auth.User": "fas fa-users",
+        "orders.Order": "fas fa-shopping-cart",
+    },
+}
