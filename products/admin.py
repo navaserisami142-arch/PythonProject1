@@ -12,6 +12,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ['name', 'category', 'price', 'stock', 'available']
     list_filter = ['available', 'category']
     list_editable = ['price', 'stock', 'available']
+    inlines = [ProductImageInline]
 
 
 @admin.register(Coupon)
@@ -20,9 +21,10 @@ class CouponAdmin(admin.ModelAdmin):
     list_editable = ['active']
 
 
-admin.site.register(Category)
-admin.site.register(Review)
-
 @admin.register(HeroBanner)
 class HeroBannerAdmin(admin.ModelAdmin):
-    list_display = ("title", "active")
+    list_display = ('title', 'active')
+
+
+admin.site.register(Category)
+admin.site.register(Review)
